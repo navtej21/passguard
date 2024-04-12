@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:local_auth/local_auth.dart';
 import 'package:password_generator/screen/home_screen.dart';
-import 'package:password_generator/screen/password_screen.dart';
+import 'package:password_generator/screen/password_section/password_generation.dart';
+import 'package:password_generator/screen/password_section/password_screen.dart';
 
 Future<void> authenticate(BuildContext context) async {
   final LocalAuthentication auth = LocalAuthentication();
@@ -23,7 +24,7 @@ Future<void> authenticate(BuildContext context) async {
     Navigator.pushReplacement(
       context,
       MaterialPageRoute(builder: (context) {
-        return PassWrodScreen();
+        return PassWrodScreen(users: users2);
       }),
     );
   } else {
