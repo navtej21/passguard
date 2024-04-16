@@ -11,6 +11,10 @@ class PassWrodScreen extends StatefulWidget {
   State<PassWrodScreen> createState() => _PassWrodScreenState();
 }
 
+String? appname2;
+String? password2;
+String? username2;
+
 class _PassWrodScreenState extends State<PassWrodScreen> {
   List<user> lst = [];
 
@@ -84,7 +88,7 @@ class _PassWrodScreenState extends State<PassWrodScreen> {
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(10),
                       border: Border.all(color: Colors.black, width: 2),
-                      gradient: LinearGradient(
+                      gradient: const LinearGradient(
                         colors: [Colors.blueAccent, Colors.greenAccent],
                         begin: Alignment.topLeft,
                         end: Alignment.bottomRight,
@@ -95,7 +99,7 @@ class _PassWrodScreenState extends State<PassWrodScreen> {
                       children: [
                         Text(
                           lst[index].appsitename,
-                          style: TextStyle(
+                          style: const TextStyle(
                             fontSize: 25,
                             fontWeight: FontWeight.w400,
                           ),
@@ -105,28 +109,30 @@ class _PassWrodScreenState extends State<PassWrodScreen> {
                           children: [
                             IconButton(
                               onPressed: () {
+                                appname2 = lst[index].appsitename;
+                                username2 = lst[index].username;
+                                password2 = lst[index].password;
                                 Navigator.push(
                                     context,
                                     MaterialPageRoute(
-                                        builder: (context) =>
-                                            UpdatePassword()));
+                                        builder: (context) => UpdatePassword(
+                                            appname: appname2!,
+                                            username: username2!,
+                                            password: password2!)));
                               },
                               icon: Icon(Icons.edit),
                             ),
                             IconButton(
                               onPressed: () {
-                                setState(() {
-                                  if (lst.isEmpty) {
-                                    Container(
-                                      child: Text(
-                                          'There are no passwords stored!!'),
-                                    );
-                                  } else {
-                                    setState(() {
-                                      lst.removeAt(index);
-                                    });
-                                  }
-                                });
+                                {
+                                  setState(() {
+                                    lst.removeAt(index);
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                        SnackBar(
+                                            content: Text(
+                                                'Password Deleted Successfully!')));
+                                  });
+                                }
                               },
                               icon: Icon(Icons.delete),
                             ),

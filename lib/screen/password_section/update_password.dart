@@ -1,28 +1,46 @@
 import 'package:flutter/material.dart';
 import 'package:password_generator/screen/datamodel/data.dart';
 import 'package:password_generator/screen/password_section/password_generation.dart';
+import 'package:password_generator/screen/password_section/password_screen.dart';
 
 class UpdatePassword extends StatefulWidget {
-  UpdatePassword({Key? key}) : super(key: key);
+  UpdatePassword({
+    Key? key,
+    required this.appname,
+    required this.username,
+    required this.password,
+  }) : super(key: key);
+
+  final String appname;
+  final String username;
+  final String password;
 
   @override
   State<UpdatePassword> createState() => _UpdatePasswordListState();
 }
 
 List<user> users2 = [];
+late String x;
+late String y;
+late String z;
 
 class _UpdatePasswordListState extends State<UpdatePassword> {
+  @override
+  void initState() {
+    super.initState();
+    x = widget.appname;
+    y = widget.username;
+    z = widget.password;
+  }
+
   final _formkey = GlobalKey<FormState>();
 
   @override
   Widget build(BuildContext context) {
-    String appname = "";
-    String usernames = "";
-    String password = "";
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          'Add New Password',
+          'Update Password',
           style: TextStyle(fontWeight: FontWeight.w800),
         ),
       ),
@@ -38,7 +56,8 @@ class _UpdatePasswordListState extends State<UpdatePassword> {
                     height: 25,
                   ),
                   TextFormField(
-                    decoration: const InputDecoration(
+                    initialValue: x,
+                    decoration: InputDecoration(
                       labelText: 'App or Site Name',
                       hintText: 'App or Site Name',
                       border: OutlineInputBorder(),
@@ -48,9 +67,7 @@ class _UpdatePasswordListState extends State<UpdatePassword> {
                     ),
                     validator: (value) {
                       if (value == null || value.isEmpty) {
-                        return 'Please Enter The App Name or Site Name';
-                      } else {
-                        appname = value;
+                        return 'Please Enter App/Site Name';
                       }
                       return null;
                     },
@@ -59,7 +76,8 @@ class _UpdatePasswordListState extends State<UpdatePassword> {
                     height: 25,
                   ),
                   TextFormField(
-                    decoration: const InputDecoration(
+                    initialValue: y,
+                    decoration: InputDecoration(
                       labelText: 'Username',
                       prefixIcon: Icon(Icons.person),
                       hintText: 'Username',
@@ -69,45 +87,45 @@ class _UpdatePasswordListState extends State<UpdatePassword> {
                     ),
                     validator: (value) {
                       if (value == null || value.isEmpty) {
-                        return 'Please enter username';
-                      } else {
-                        usernames = value;
+                        return 'Please Enter The Username';
                       }
                       return null;
                     },
                   ),
                   SizedBox(height: 15),
                   TextFormField(
-                      obscureText: true,
-                      decoration: const InputDecoration(
-                          prefixIcon: Icon(Icons.lock),
-                          hintText: 'Password',
-                          label: Text('Password'),
-                          border: OutlineInputBorder(),
-                          helperText:
-                              'Enter the current password for the site/app.'),
-                      validator: (value) {
-                        if (value == null || value.isEmpty) {
-                          return 'Enter The Password';
-                        } else {
-                          password = value;
-                        }
-                        return null;
-                      }),
+                    initialValue: z,
+                    obscureText: true,
+                    decoration: InputDecoration(
+                      prefixIcon: Icon(Icons.lock),
+                      suffixIcon: Icon(Icons.remove_red_eye),
+                      hintText: 'Password',
+                      labelText: 'Password',
+                      border: OutlineInputBorder(),
+                      helperText:
+                          'Enter the current password for the site/app.',
+                    ),
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'Please enter the password';
+                      }
+                      return null;
+                    },
+                  ),
                   SizedBox(height: 25),
                   ElevatedButton(
                     onPressed: () {
                       if (_formkey.currentState!.validate()) {
-                        bool exists = users2
-                            .any((element) => element.appsitename == appname);
+                        bool exists =
+                            users2.any((element) => element.appsitename == x);
                         if (exists) {
                           ScaffoldMessenger.of(context).showSnackBar(
                             SnackBar(
-                                content:
-                                    Text('App or Site Name already exists')),
+                              content: Text('App or Site Name already exists'),
+                            ),
                           );
                         } else {
-                          users2.add(user(appname, usernames, password));
+                          users2.add(user(x, y, z));
                           Navigator.push(context,
                               MaterialPageRoute(builder: (context) {
                             return PassWrodScreen(
@@ -117,7 +135,7 @@ class _UpdatePasswordListState extends State<UpdatePassword> {
                         }
                       }
                     },
-                    child: Text('Update  Password'),
+                    child: Text('Update Password'),
                   ),
                 ],
               ),

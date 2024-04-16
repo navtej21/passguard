@@ -10,15 +10,15 @@ class PasswordList extends StatefulWidget {
 }
 
 List<user> users2 = [];
+String appname = "";
+String usernames = "";
+String password = "";
 
 class _PasswordListState extends State<PasswordList> {
   final _formkey = GlobalKey<FormState>();
 
   @override
   Widget build(BuildContext context) {
-    String appname = "";
-    String usernames = "";
-    String password = "";
     return Scaffold(
       appBar: AppBar(
         title: Text(
@@ -52,7 +52,6 @@ class _PasswordListState extends State<PasswordList> {
                       } else {
                         appname = value;
                       }
-                      return null;
                     },
                   ),
                   const SizedBox(
